@@ -11,16 +11,21 @@ export const authApi = createApi({
   }),
   endpoints: builder => ({
     login: builder.mutation<BaseResponse<LoginResponseData>, LoginData>({
-      invalidatesTags: ['Auth'],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const result = await queryFulfilled
+        try {
+          const result = await queryFulfilled
 
-        if (result && result.data.error_code === ErrorsCodes.Success) {
-          localStorage.setItem('token', result.data.data.token)
-          dispatch(appActions.setIsAuthenticated(true))
-        } else {
-          localStorage.removeItem('token')
-          dispatch(appActions.setIsAuthenticated(false))
+          if (result && result.data.error_code === ErrorsCodes.Success) {
+            localStorage.setItem('token', result.data.data.token)
+            dispatch(appActions.setIsAuthenticated(true))
+            dispatch(appActions.setSuccessMessage(result.data.error_message ?? null))
+          } else {
+            localStorage.removeItem('token')
+            dispatch(appActions.setIsAuthenticated(false))
+            dispatch(appActions.setErrorMessage(result.data.error_text ?? null))
+          }
+        } catch (error) {
+          dispatch(appActions.setErrorMessage(JSON.stringify(error)))
         }
       },
       query: body => ({

@@ -8,7 +8,7 @@ import { selectAppIsAuthenticated } from '@/services/app/app.selectors'
 import { useLoginMutation } from '@/services/auth/auth-service'
 
 export const LoginPage = () => {
-  const [login, { data, isSuccess }] = useLoginMutation()
+  const [login, { data }] = useLoginMutation()
 
   const isAuthenticated = useSelector(selectAppIsAuthenticated)
   const severError = data?.error_text

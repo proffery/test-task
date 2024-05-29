@@ -22,13 +22,21 @@ const slice = createSlice({
     )
   },
   initialState: {
+    errorMessage: null as null | string,
     isAuthenticated: !!localStorage.getItem('token') as boolean,
     isLoading: false as boolean,
+    successMessage: null as null | string,
   },
   name: 'app',
   reducers: {
+    setErrorMessage: (state, action: PayloadAction<null | string>) => {
+      state.errorMessage = action.payload
+    },
     setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload
+    },
+    setSuccessMessage: (state, action: PayloadAction<null | string>) => {
+      state.successMessage = action.payload
     },
   },
 })

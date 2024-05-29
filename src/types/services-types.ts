@@ -1,6 +1,7 @@
 export type LoginResponseData = {
   token: string
 }
+
 export type TableResponseData = {
   companySigDate: string
   companySignatureName: string
