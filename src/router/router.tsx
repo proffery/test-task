@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import {
   Navigate,
   Outlet,
@@ -8,7 +9,9 @@ import {
 
 import { ROUTES } from '@/common/consts/routes'
 import { LoginPage } from '@/components/pages/login-page/login-page'
+import { TablePage } from '@/components/pages/table-page/table-page'
 import { Layout } from '@/components/ui/layout/layot'
+import { selectAppIsAuthenticated } from '@/services/app/app.selectors'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -23,7 +26,7 @@ const privateRoutes: RouteObject[] = [
     path: ROUTES.base,
   },
   {
-    element: <div>hello</div>,
+    element: <TablePage />,
     path: ROUTES.table,
   },
   {
@@ -33,9 +36,9 @@ const privateRoutes: RouteObject[] = [
 ]
 
 function PrivateRoutes() {
-  const isAuthenticated = false
+  const isAuthenticated = useSelector(selectAppIsAuthenticated)
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
+  return isAuthenticated ? <Outlet /> : <Navigate to={ROUTES.login} />
 }
 
 const router = createBrowserRouter([

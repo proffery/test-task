@@ -1,10 +1,14 @@
-import { ReactNode } from 'react'
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 import s from './page.module.css'
 
 type Props = {
   children?: ReactNode
-}
-export const Page = ({ children }: Props) => {
-  return <div className={s.pageContainer}>{children}</div>
+} & ComponentPropsWithoutRef<'div'>
+export const Page = ({ children, ...rest }: Props) => {
+  return (
+    <div {...rest} className={s.pageContainer}>
+      {children}
+    </div>
+  )
 }

@@ -1,3 +1,4 @@
+import { ComponentPropsWithoutRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { loginSchema } from '@/components/forms/login-form/login-schema'
@@ -10,54 +11,67 @@ import s from './login-form.module.css'
 
 type Props = {
   onLogin: (data: LoginData) => void
-  serverError?: string
-}
-export const LoginForm = ({ onLogin }: Props) => {
+  serverError?: null | string
+} & ComponentPropsWithoutRef<'div'>
+export const LoginForm = ({ onLogin, serverError, ...rest }: Props) => {
   const {
+    clearErrors,
     formState: { errors },
     handleSubmit,
     register,
+    setError,
   } = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
+
+  useEffect(() => {
+    if (serverError) {
+      setError('username', { message: serverError, type: 'server' })
+      setError('password', { message: serverError, type: 'server' })
+    } else {
+      clearErrors(['username', 'password'])
+    }
+  }, [serverError])
 
   const handleFormSubmit = (data: LoginData) => {
     onLogin(data)
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
+    <div className={s.formContainer} {...rest}>
       <Card sx={{ minWidth: 275 }}>
-        <CardContent className={s.form}>
-          <Typography
-            color={'text.secondary'}
-            gutterBottom
-            sx={{ fontSize: 36 }}
-            textAlign={'center'}
-            variant={'h1'}
-          >
-            Log In
-          </Typography>
-          <TextField
-            error={!!errors.userName}
-            helperText={errors.userName?.message}
-            label={'Username'}
-            variant={'filled'}
-            {...register('userName')}
-          />
-          <TextField
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            label={'Password'}
-            type={'password'}
-            variant={'filled'}
-            {...register('password')}
-          />
-          <div className={s.buttonContainer}>
-            <Button type={'submit'} variant={'contained'}>
-              Sign In
-            </Button>
-          </div>
+        <CardContent>
+          <form className={s.form} onSubmit={handleSubmit(handleFormSubmit)}>
+            <Typography
+              color={'text.secondary'}
+              gutterBottom
+              sx={{ fontSize: 36 }}
+              textAlign={'center'}
+              variant={'h1'}
+            >
+              Log In
+            </Typography>
+            <TextField
+              error={!!errors.username}
+              helperText={errors.username?.message}
+              label={'Username'}
+              variant={'filled'}
+              {...register('username')}
+            />
+            <TextField
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              label={'Password'}
+              type={'password'}
+              variant={'filled'}
+              {...register('password')}
+            />
+            <div className={s.buttonContainer}>
+              <Button type={'submit'} variant={'contained'}>
+                Sign In
+              </Button>
+            </div>
+          </form>
         </CardContent>
       </Card>
-    </form>
+    </div>
   )
 }
