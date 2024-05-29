@@ -52,7 +52,7 @@ export const LoginForm = ({ onLogin, serverError, ...rest }: Props) => {
             <TextField
               error={!!errors.username}
               helperText={errors.username?.message}
-              label={'Username'}
+              label={'User name'}
               variant={'filled'}
               {...register('username')}
             />

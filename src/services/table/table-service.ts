@@ -13,7 +13,7 @@ export const tableApi = createApi({
   }),
   endpoints: builder => {
     return {
-      getTable: builder.query<BaseResponse<TableResponseData>, void>({
+      getTable: builder.query<BaseResponse<TableResponseData[]>, void>({
         query: () => `/ru/data/v3/testmethods/docs/userdocs/get`,
       }),
     }

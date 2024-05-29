@@ -13,7 +13,7 @@ export const Layout = () => {
       <main>
         <Outlet />
       </main>
-      <footer>Coded by Dmitry Shamko All Rights Reserved 2024</footer>
+      <footer>Coded by Dmitry Shamko 2024</footer>
     </>
   )
 }

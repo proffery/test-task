@@ -11,6 +11,7 @@ export type TableResponseData = {
   employeeNumber: string
   employeeSigDate: string
   employeeSignatureName: string
+  id: string
 }
 
 export type BaseResponse<T> = {
