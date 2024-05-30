@@ -1,0 +1,19 @@
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.footer div {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.githubLogo {
+  height: 1rem;
+  transition: all 0.3s;
+}
+.githubLogo:hover {
+  transform: rotate(360deg);
+}

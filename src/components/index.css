@@ -31,12 +31,5 @@ a:visited {
 body {
   margin: 0;
   padding: 0;
-}
-
-footer {
-  text-align: center;
-  position: relative;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  background: #eaeafa;
 }

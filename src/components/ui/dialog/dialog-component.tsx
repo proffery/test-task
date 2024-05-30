@@ -35,11 +35,17 @@ export const DialogComponent = ({
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      {title && <DialogTitle>{title}</DialogTitle>}
+      {title && (
+        <DialogTitle sx={{ textAlign: 'center' }} variant={'h4'}>
+          {title}
+        </DialogTitle>
+      )}
       {children}
       <div className={s.buttonContainer}>
-        <Button onClick={handleClose}>{closeText}</Button>
-        <Button onClick={handleConfirm} type={'submit'}>
+        <Button color={'error'} onClick={handleClose} variant={'outlined'}>
+          {closeText}
+        </Button>
+        <Button color={'info'} onClick={handleConfirm} type={'submit'} variant={'outlined'}>
           {confirmText}
         </Button>
       </div>

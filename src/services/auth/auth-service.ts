@@ -1,4 +1,4 @@
-import { ErrorsCodes } from '@/common/enums/errors-codes'
+import { authService } from '@/common/utils/server-response-handlers'
 import { appActions } from '@/services/app/app-service'
 import { LoginData } from '@/types/forms-types'
 import { BaseResponse, LoginResponseData } from '@/types/services-types'
@@ -13,17 +13,9 @@ export const authApi = createApi({
     login: builder.mutation<BaseResponse<LoginResponseData>, LoginData>({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          const result = await queryFulfilled
+          const res = await queryFulfilled
 
-          if (result && result.data.error_code === ErrorsCodes.Success) {
-            localStorage.setItem('token', result.data.data.token)
-            dispatch(appActions.setIsAuthenticated(true))
-            dispatch(appActions.setSuccessMessage(result.data.error_message ?? null))
-          } else {
-            localStorage.removeItem('token')
-            dispatch(appActions.setIsAuthenticated(false))
-            dispatch(appActions.setErrorMessage(result.data.error_text ?? null))
-          }
+          authService.accessSuccessHandler(res, dispatch)
         } catch (error) {
           dispatch(appActions.setErrorMessage(JSON.stringify(error)))
         }

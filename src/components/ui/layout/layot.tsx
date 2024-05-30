@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
 import { Alerts } from '@/components/ui/alerts/alerts'
+import { Footer } from '@/components/ui/footer/footer'
 import { Header } from '@/components/ui/header/header'
 import { Loader } from '@/components/ui/loader/loader'
 
@@ -13,7 +14,7 @@ export const Layout = () => {
       <main>
         <Outlet />
       </main>
-      <footer>Coded by Dmitry Shamko 2024</footer>
+      <Footer />
     </>
   )
 }
