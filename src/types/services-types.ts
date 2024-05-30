@@ -14,7 +14,7 @@ export type TableResponseData = {
   id: string
 }
 
-export type BaseResponse<T> = {
+export type BaseResponse<T = {}> = {
   data: T
   error_code: number
   error_message?: string

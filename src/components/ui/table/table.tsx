@@ -1,6 +1,4 @@
-import { useId } from 'react'
-
-import { TableHeadType, tableHeads } from '@/common/consts/tableFields'
+import { TableHeadType, tableHeads } from '@/common/consts/table-fields'
 import { toLocalDate } from '@/common/utils/dateToLocalFormat'
 import { TableResponseData } from '@/types/services-types'
 import {
@@ -41,7 +39,7 @@ export const TableComponent = ({ deleteData, editData, tableData }: Props) => {
           {tableData?.map((item: TableResponseData) => (
             <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               {tableHeads.map((cell: TableHeadType) => (
-                <TableCell component={'th'} key={useId()} scope={'row'}>
+                <TableCell component={'th'} key={item.id + cell.key} scope={'row'}>
                   {toLocalDate(item[cell.key])}
                 </TableCell>
               ))}

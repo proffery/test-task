@@ -29,6 +29,9 @@ const slice = createSlice({
   },
   name: 'app',
   reducers: {
+    setAppIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
+    },
     setErrorMessage: (state, action: PayloadAction<null | string>) => {
       state.errorMessage = action.payload
     },
