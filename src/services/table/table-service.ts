@@ -30,7 +30,7 @@ export const tableApi = createApi({
               id: tempId,
             }
 
-            draft.data.push(optimisticData)
+            draft.data.unshift(optimisticData)
           })
         )
 
@@ -43,7 +43,7 @@ export const tableApi = createApi({
               tableApi.util.updateQueryData('getTable', null, draft => {
                 const newId = result.data.data.id
 
-                draft.data[draft.data.length - 1].id = newId
+                draft.data[0].id = newId
               })
             )
           } else {
