@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { AddItemForm } from '@/components/forms/add-item-form/add-item-form'
-import { TableComponent } from '@/components/table/table'
+import { TableComponent } from '@/components/tables/table'
 import { DialogComponent } from '@/components/ui/dialog/dialog-component'
 import { Page } from '@/components/ui/page/page'
 import { selectAppIsLoading } from '@/services/app/app.selectors'
@@ -18,7 +18,7 @@ import { Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 
 export const TablePage = () => {
-  const { data: tableData } = useGetTableQuery(null)
+  const { data: tableData } = useGetTableQuery()
   const [addItem] = useAddItemMutation()
   const [deleteItem] = useRemoveItemMutation()
   const [updateItem] = useUpdateItemMutation()
@@ -61,6 +61,14 @@ export const TablePage = () => {
 
   return (
     <Page>
+      <div style={{ alignSelf: 'center', display: 'flex', gap: '10px' }}>
+        <Typography fontSize={'36px'} textAlign={'center'} variant={'h1'}>
+          Table page
+        </Typography>
+        <Button disabled={isAppLoading} onClick={() => setOpenAddItem(true)} variant={'outlined'}>
+          Add Item
+        </Button>
+      </div>
       <AddItemForm
         key={'add-item'}
         onClose={() => setOpenAddItem(false)}
@@ -87,11 +95,6 @@ export const TablePage = () => {
           ID:{itemId}
         </Typography>
       </DialogComponent>
-      <div style={{ alignSelf: 'center' }}>
-        <Button disabled={isAppLoading} onClick={() => setOpenAddItem(true)} variant={'outlined'}>
-          Add Item
-        </Button>
-      </div>
       <TableComponent
         disabled={isAppLoading}
         onDeleteData={onDeleteOpen}

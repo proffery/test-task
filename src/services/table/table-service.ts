@@ -20,7 +20,7 @@ export const tableApi = createApi({
     addItem: builder.mutation<BaseResponse<TableResponseData>, AddItemData>({
       async onQueryStarted(data, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          tableApi.util.updateQueryData('getTable', null, draft => {
+          tableApi.util.updateQueryData('getTable', undefined, draft => {
             const optimisticData = {
               ...data,
               companySigDate: new Date(data.companySigDate).toISOString(),
@@ -39,7 +39,7 @@ export const tableApi = createApi({
           if (res.data.error_code === ErrorsCodes.Success) {
             dispatch(appActions.setSuccessMessage(res.data.error_message ?? null))
             dispatch(
-              tableApi.util.updateQueryData('getTable', null, draft => {
+              tableApi.util.updateQueryData('getTable', undefined, draft => {
                 draft.data[0].id = res.data.data.id
               })
             )
@@ -58,19 +58,22 @@ export const tableApi = createApi({
         url: '/ru/data/v3/testmethods/docs/userdocs/create',
       }),
     }),
-    getTable: builder.query<BaseResponse<TableResponseData[]>, null>({
+    getTable: builder.query<BaseResponse<TableResponseData[]>, void>({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled
+        try {
+          const res = await queryFulfilled
 
-        tableService.accessDenyHandler(res, dispatch)
+          tableService.accessDenyHandler(res, dispatch)
+        } catch (error) {
+          dispatch(appActions.setErrorMessage(JSON.stringify(error)))
+        }
       },
-      providesTags: ['Table'],
       query: () => `/ru/data/v3/testmethods/docs/userdocs/get`,
     }),
     removeItem: builder.mutation<BaseResponse<TableResponseData>, { itemId: string }>({
       async onQueryStarted({ itemId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          tableApi.util.updateQueryData('getTable', null, draft => {
+          tableApi.util.updateQueryData('getTable', undefined, draft => {
             const index = draft.data.findIndex(item => item.id === itemId)
 
             if (index !== -1) {
@@ -102,7 +105,7 @@ export const tableApi = createApi({
     updateItem: builder.mutation<BaseResponse<TableResponseData>, TableResponseData>({
       async onQueryStarted({ id, ...data }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          tableApi.util.updateQueryData('getTable', null, draft => {
+          tableApi.util.updateQueryData('getTable', undefined, draft => {
             const optimisticData = {
               ...data,
               companySigDate: new Date(data.companySigDate).toISOString(),

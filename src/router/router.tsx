@@ -9,6 +9,7 @@ import {
 
 import { ROUTES } from '@/common/consts/routes'
 import { LoginPage } from '@/components/pages/login-page/login-page'
+import { NotFound } from '@/components/pages/not-found/not-found'
 import { TablePage } from '@/components/pages/table-page/table-page'
 import { Layout } from '@/components/ui/layout/layot'
 import { selectAppIsAuthenticated } from '@/services/app/app.selectors'
@@ -30,7 +31,7 @@ const privateRoutes: RouteObject[] = [
     path: ROUTES.table,
   },
   {
-    element: <h1>404! Page not found!</h1>,
+    element: <NotFound />,
     path: ROUTES.rest,
   },
 ]

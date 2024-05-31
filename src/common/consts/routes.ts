@@ -2,5 +2,5 @@ export const ROUTES = {
   base: '/',
   login: '/login',
   rest: '/*',
-  table: '/table',
+  table: '/tables',
 } as const

@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(authApi.middleware, tableApi.middleware),
+    getDefaultMiddleware().concat([authApi.middleware, tableApi.middleware]),
   reducer: {
     [appReducer.name]: appReducer.reducer,
     [authApi.reducerPath]: authApi.reducer,

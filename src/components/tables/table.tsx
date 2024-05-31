@@ -28,7 +28,7 @@ export const TableComponent = ({
 }: Props) => {
   return (
     <TableContainer component={Paper}>
-      <Table aria-label={'simple table'} sx={{ minWidth: 650 }}>
+      <Table aria-label={'simple tables'} sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             {tableHeads.map(head => (
