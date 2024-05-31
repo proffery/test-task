@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { AddItemForm } from '@/components/forms/add-item-form/add-item-form'
+import { TableComponent } from '@/components/table/table'
 import { DialogComponent } from '@/components/ui/dialog/dialog-component'
 import { Page } from '@/components/ui/page/page'
-import { TableComponent } from '@/components/ui/table/table'
 import { selectAppIsLoading } from '@/services/app/app.selectors'
 import {
   useAddItemMutation,
   useGetTableQuery,
   useRemoveItemMutation,
+  useUpdateItemMutation,
 } from '@/services/table/table-service'
 import { AddItemData } from '@/types/forms-types'
 import { TableResponseData } from '@/types/services-types'
@@ -20,6 +21,7 @@ export const TablePage = () => {
   const { data: tableData } = useGetTableQuery(null)
   const [addItem] = useAddItemMutation()
   const [deleteItem] = useRemoveItemMutation()
+  const [updateItem] = useUpdateItemMutation()
 
   const isAppLoading = useSelector(selectAppIsLoading)
 
@@ -42,7 +44,8 @@ export const TablePage = () => {
     setOpenEditItem(true)
   }
 
-  const onEditConfirm = () => {
+  const onEditConfirm = (data: AddItemData) => {
+    updateItem({ id: itemId, ...data })
     setOpenEditItem(false)
   }
 
@@ -74,10 +77,11 @@ export const TablePage = () => {
         title={'Edit item'}
       />
       <DialogComponent
+        key={'delete-item'}
         onClose={() => setOpenDeleteItem(false)}
         onConfirm={onDeleteConfirm}
         open={openDeleteItem}
-        title={`Remove item?`}
+        title={`Delete item?`}
       >
         <Typography textAlign={'center'} variant={'caption'}>
           ID:{itemId}

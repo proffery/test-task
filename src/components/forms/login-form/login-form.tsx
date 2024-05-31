@@ -1,10 +1,11 @@
 import { ComponentPropsWithoutRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { ControlledInput } from '@/components/controlled/controlled-input'
 import { loginSchema } from '@/components/forms/login-form/login-schema'
 import { LoginData } from '@/types/forms-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Card, CardContent, TextField, Typography } from '@mui/material'
+import { Card, CardContent, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 
 import s from './login-form.module.css'
@@ -14,13 +15,13 @@ type Props = {
   serverError?: null | string
 } & ComponentPropsWithoutRef<'div'>
 export const LoginForm = ({ onLogin, serverError, ...rest }: Props) => {
-  const {
-    clearErrors,
-    formState: { errors },
-    handleSubmit,
-    register,
-    setError,
-  } = useForm<LoginData>({ resolver: zodResolver(loginSchema) })
+  const { clearErrors, control, handleSubmit, setError } = useForm<LoginData>({
+    defaultValues: {
+      password: '',
+      username: '',
+    },
+    resolver: zodResolver(loginSchema),
+  })
 
   useEffect(() => {
     if (serverError) {
@@ -49,20 +50,18 @@ export const LoginForm = ({ onLogin, serverError, ...rest }: Props) => {
             >
               Log In
             </Typography>
-            <TextField
-              error={!!errors.username}
-              helperText={errors.username?.message}
+            <ControlledInput
+              control={control}
               label={'User name'}
+              name={'username'}
               variant={'filled'}
-              {...register('username')}
             />
-            <TextField
-              error={!!errors.password}
-              helperText={errors.password?.message}
+            <ControlledInput
+              control={control}
               label={'Password'}
+              name={'password'}
               type={'password'}
               variant={'filled'}
-              {...register('password')}
             />
             <div className={s.buttonContainer}>
               <Button type={'submit'} variant={'contained'}>

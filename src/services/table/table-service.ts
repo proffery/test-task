@@ -99,9 +99,52 @@ export const tableApi = createApi({
         url: `/ru/data/v3/testmethods/docs/userdocs/delete/${itemId}`,
       }),
     }),
+    updateItem: builder.mutation<BaseResponse<TableResponseData>, TableResponseData>({
+      async onQueryStarted({ id, ...data }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          tableApi.util.updateQueryData('getTable', null, draft => {
+            const optimisticData = {
+              ...data,
+              companySigDate: new Date(data.companySigDate).toISOString(),
+              employeeSigDate: new Date(data.employeeSigDate).toISOString(),
+            }
+            const itemIndex = draft?.data?.findIndex(item => item?.id === id)
+
+            if (itemIndex !== -1) {
+              draft.data[itemIndex] = { ...draft?.data[itemIndex], ...optimisticData }
+            }
+          })
+        )
+
+        try {
+          const res = await queryFulfilled
+
+          tableService.accessDenyHandler(res, dispatch)
+          if (res.data.error_code === ErrorsCodes.Success) {
+            dispatch(appActions.setSuccessMessage(res.data.error_message ?? null))
+          } else {
+            dispatch(appActions.setErrorMessage(res.data.error_text ?? null))
+            patchResult?.undo()
+          }
+        } catch (error) {
+          dispatch(appActions.setErrorMessage(JSON.stringify(error)))
+          patchResult?.undo()
+        }
+      },
+      query: ({ id, ...body }) => ({
+        body,
+        method: 'POST',
+        url: `/ru/data/v3/testmethods/docs/userdocs/set/${id}`,
+      }),
+    }),
   }),
   reducerPath: 'tableApi',
   tagTypes: ['Table'],
 })
 
-export const { useAddItemMutation, useGetTableQuery, useRemoveItemMutation } = tableApi
+export const {
+  useAddItemMutation,
+  useGetTableQuery,
+  useRemoveItemMutation,
+  useUpdateItemMutation,
+} = tableApi

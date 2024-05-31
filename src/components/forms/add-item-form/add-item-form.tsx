@@ -2,11 +2,12 @@ import { ComponentPropsWithoutRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { isoStringToDateFormat } from '@/common/utils/iso-string-to-date-format'
+import { ControlledInput } from '@/components/controlled/controlled-input'
 import { addItemSchema } from '@/components/forms/add-item-form/add-item-schema'
 import { DialogComponent } from '@/components/ui/dialog/dialog-component'
 import { AddItemData } from '@/types/forms-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { InputLabel, TextField } from '@mui/material'
+import { InputLabel } from '@mui/material'
 
 import s from './add-item-form.module.css'
 
@@ -15,113 +16,95 @@ type Props = {
   onFormSubmit: (data: AddItemData) => void
 } & Omit<ComponentPropsWithoutRef<typeof DialogComponent>, 'children'>
 export const AddItemForm = ({ defaultData, onChange, onFormSubmit, open, ...rest }: Props) => {
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    reset,
-  } = useForm<AddItemData>({
+  const { control, handleSubmit, reset } = useForm<AddItemData>({
+    defaultValues: { ...defaultData },
     resolver: zodResolver(addItemSchema),
   })
 
   useEffect(() => {
-    reset()
+    reset({
+      companySigDate: isoStringToDateFormat(defaultData?.companySigDate ?? ''),
+      companySignatureName: defaultData?.employeeSignatureName ?? '',
+      documentName: defaultData?.documentName ?? '',
+      documentStatus: defaultData?.documentStatus ?? '',
+      documentType: defaultData?.documentType ?? '',
+      employeeNumber: defaultData?.employeeNumber ?? '',
+      employeeSigDate: isoStringToDateFormat(defaultData?.employeeSigDate ?? ''),
+      employeeSignatureName: defaultData?.employeeSignatureName ?? '',
+    })
   }, [open])
 
-  const handleFormSubmit = handleSubmit(data => {
+  const handleFormSubmit = (data: AddItemData) => {
     onFormSubmit(data)
-  })
+    reset()
+  }
 
   return (
-    <DialogComponent onConfirm={handleFormSubmit} open={open} {...rest}>
-      <form className={s.form} onSubmit={handleFormSubmit}>
+    <DialogComponent onConfirm={handleSubmit(handleFormSubmit)} open={open} {...rest}>
+      <form className={s.form} onSubmit={handleSubmit(handleFormSubmit)}>
         <InputLabel htmlFor={'companySigDate'} size={'small'}>
-          Company Signature Date
+          Company
         </InputLabel>
-        <TextField
-          defaultValue={isoStringToDateFormat(defaultData?.companySigDate ?? '')}
-          error={!!errors.companySigDate}
-          helperText={errors.companySigDate?.message}
-          id={'companySigDate'}
-          margin={'none'}
+        <ControlledInput
+          control={control}
+          label={'Company Signature Date'}
+          name={'companySigDate'}
           size={'small'}
           type={'date'}
           variant={'filled'}
-          {...register('companySigDate')}
         />
-        <TextField
-          defaultValue={defaultData?.companySignatureName}
-          error={!!errors.companySignatureName}
-          helperText={errors.companySignatureName?.message}
+        <ControlledInput
+          control={control}
           label={'Company Signature Name'}
-          margin={'none'}
+          name={'companySignatureName'}
           size={'small'}
           variant={'filled'}
-          {...register('companySignatureName')}
         />
-        <TextField
-          defaultValue={defaultData?.documentName}
-          error={!!errors.documentName}
-          helperText={errors.documentName?.message}
+        <ControlledInput
+          control={control}
           label={'Document Name'}
-          margin={'none'}
+          name={'documentName'}
           size={'small'}
           variant={'filled'}
-          {...register('documentName')}
         />
-        <TextField
-          defaultValue={defaultData?.documentStatus}
-          error={!!errors.documentStatus}
-          helperText={errors.documentStatus?.message}
+        <ControlledInput
+          control={control}
           label={'Document Status'}
-          margin={'none'}
+          name={'documentStatus'}
           size={'small'}
           variant={'filled'}
-          {...register('documentStatus')}
         />
-        <TextField
-          defaultValue={defaultData?.documentType}
-          error={!!errors.documentType}
-          helperText={errors.documentType?.message}
+        <ControlledInput
+          control={control}
           label={'Document Type'}
-          margin={'none'}
+          name={'documentType'}
           size={'small'}
           variant={'filled'}
-          {...register('documentType')}
-        />
-        <TextField
-          defaultValue={defaultData?.employeeNumber}
-          error={!!errors.employeeNumber}
-          helperText={errors.employeeNumber?.message}
-          label={'Employee Number'}
-          margin={'none'}
-          size={'small'}
-          variant={'filled'}
-          {...register('employeeNumber')}
         />
         <InputLabel htmlFor={'employeeSigDate'} size={'small'}>
-          Employee Signature Date
+          Employee
         </InputLabel>
-        <TextField
-          defaultValue={isoStringToDateFormat(defaultData?.employeeSigDate ?? '')}
-          error={!!errors.employeeSigDate}
-          helperText={errors.employeeSigDate?.message}
-          id={'employeeSigDate'}
-          margin={'none'}
+        <ControlledInput
+          control={control}
+          label={'Employee Number'}
+          name={'employeeNumber'}
+          size={'small'}
+          variant={'filled'}
+        />
+        <ControlledInput
+          control={control}
+          label={'Employee Signature Date'}
+          name={'employeeSigDate'}
           size={'small'}
           type={'date'}
           variant={'filled'}
-          {...register('employeeSigDate')}
         />
-        <TextField
-          defaultValue={defaultData?.employeeSignatureName}
-          error={!!errors.employeeSignatureName}
-          helperText={errors.employeeSignatureName?.message}
+        <ControlledInput
+          control={control}
           label={'Employee Signature Name'}
-          margin={'none'}
+          name={'employeeSignatureName'}
           size={'small'}
           variant={'filled'}
-          {...register('employeeSignatureName')}
         />
       </form>
     </DialogComponent>
