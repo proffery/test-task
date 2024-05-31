@@ -12,7 +12,7 @@ export const Footer = () => {
         Dmitry Shamko&nbsp;
       </a>
       <a href={'https://github.com/proffery/test-task/'} rel={'noreferrer'} target={'_blank'}>
-        <img alt={'github'} className={s.githubLogo} src={'./assets/github-mark.png'} />
+        <img alt={'github'} className={s.githubLogo} src={'./github-mark.png'} />
       </a>
       <a>&nbsp;{new Date().getFullYear()}</a>
     </footer>
