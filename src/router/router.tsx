@@ -1,11 +1,5 @@
 import { useSelector } from 'react-redux'
-import {
-  Navigate,
-  Outlet,
-  RouteObject,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom'
+import { Navigate, Outlet, RouteObject, RouterProvider, createHashRouter } from 'react-router-dom'
 
 import { ROUTES } from '@/common/consts/routes'
 import { LoginPage } from '@/components/pages/login-page/login-page'
@@ -42,7 +36,7 @@ function PrivateRoutes() {
   return isAuthenticated ? <Outlet /> : <Navigate to={ROUTES.login} />
 }
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     children: [
       {

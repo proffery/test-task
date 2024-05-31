@@ -7,11 +7,11 @@ export const Footer = () => {
         href={'https://proffery.github.io/portfolio/'}
         rel={'noreferrer'}
         target={'_blank'}
-        title={'Dmitry Shamko'}
+        title={'Portfolio'}
       >
         Dmitry Shamko&nbsp;
       </a>
-      <a href={'https://github.com/proffery/'}>
+      <a href={'https://github.com/proffery/test-task/'} rel={'noreferrer'} target={'_blank'}>
         <img alt={'github'} className={s.githubLogo} src={'/github-mark.png'} />
       </a>
       <a>&nbsp;{new Date().getFullYear()}</a>

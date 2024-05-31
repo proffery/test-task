@@ -1,11 +1,14 @@
 {
   "name": "test-task",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "homepage": "https://proffery.github.io/test-task",
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
+    "predeploy": "tsc && vite build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "format": "prettier --write src",
     "lint": "eslint src --ext .jsx,.js,.tsx,.ts  --no-error-on-unmatched-pattern --fix && stylelint --fix src/{,*/}*.{scss,css} --allow-empty-input"
@@ -17,6 +20,7 @@
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@reduxjs/toolkit": "^2.2.5",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.5",
